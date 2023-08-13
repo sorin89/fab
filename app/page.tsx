@@ -31,7 +31,7 @@ export default function Home() {
         {results && results.map((r, index) => (
           <div key={index}>
             <div className="my-2 flex p-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md cursor-pointer">
-              <img src={`${r.Poster}`} className="w-10 h-10 rounded mr-2" alt={`Poster for ${r.Title}`} />
+              <img src={`${r.Poster != 'N/A' ? r.Poster : 'poster.png'}`} className="w-10 h-10 rounded-lg mr-2 border border-gray-400" alt={`Poster for ${r.Title}`} />
               <div className="flex-grow">{r.Title}</div>
               <div className="flex-initial px-5"><PiClockDuotone /> {r.Year}</div>
               <div className="flex-initial px-5">
