@@ -1,6 +1,7 @@
 'use client'
 import { useState } from "react"
 import { FaImdb } from "react-icons/fa";
+import { BiSun, BiMoon } from "react-icons/bi";
 import { PiClockDuotone } from "react-icons/pi";
 import { Button, ButtonGroup, Input, Stack, Text, useColorMode, HStack } from '@chakra-ui/react'
 import Image from 'next/image'
@@ -24,27 +25,34 @@ export default function Home() {
     setResults(results)
   }
 
+  function setSearch(value: string) {
+    if(value == '') setResults([])
+    setQuery(value)
+  }
+
   const { colorMode, toggleColorMode } = useColorMode()
 
   return (
     <main className="max-w-5xl mx-auto py-20">
-      <HStack>
-        <Text>Tidybase</Text>
-        <Button onClick={toggleColorMode}>
-          Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
+      <HStack spacing="10" className="mb-10">
+        <Text fontSize="4xl" as="b">Tidybase</Text>
+        <Button onClick={toggleColorMode} className="text-3xl">
+          {colorMode === 'light' ? <BiSun/> : <BiMoon/> }
         </Button>
       </HStack>
       <Stack spacing={8} direction='row'>
         <Text>Examples:</Text>
-        <Button className="rounded-xl border border-gray-400" onClick={() => search('Matrix')}>Matrix</Button>
+        <Button variant="solid" className="rounded-xl border border-gray-400" onClick={() => search('Matrix')}>Matrix</Button>
         <Button className="rounded-xl border border-gray-400" onClick={() => search('Matrix Reloaded')}>Matrix Reloaded</Button>
         <Button className="rounded-xl border border-gray-400" onClick={() => search('Matrix Revolutions')}>Matrix Revolutions</Button>
       </Stack>
       <Input 
-        placeholder='🔍 search' 
-        size='md' value={query} 
-        onChange={(e) => setQuery(e.target.value)} 
-        onKeyUp={e=> e.key === 'Enter' && search(query)} 
+        placeholder="🔍 search"
+        type="search"
+        size="md"
+        value={query} 
+        onChange={(e) => setSearch(e.target.value)} 
+        onKeyUp={e=> e.key === "Enter" && search(query)} 
         className="my-10"
       />
       <div>
