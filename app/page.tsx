@@ -1,9 +1,10 @@
 'use client'
 import { useState } from "react"
 import { FaImdb } from "react-icons/fa";
-import { BiSun, BiMoon } from "react-icons/bi";
+import { BiSun, BiMoon, BiSortAlt2 } from "react-icons/bi";
 import { PiClockDuotone } from "react-icons/pi";
-import { Button, ButtonGroup, Input, Stack, Text, useColorMode, HStack, Box, Flex, Select } from '@chakra-ui/react'
+import { HiViewList, HiViewGrid } from "react-icons/hi";
+import { Button, IconButton, ButtonGroup, Input, Stack, Text, useColorMode, HStack, Box, Flex, Select } from '@chakra-ui/react'
 import Image from 'next/image'
 
 interface Movie {
@@ -17,6 +18,7 @@ interface Movie {
 export default function Home() {
   const [results, setResults] = useState<Movie[]>([])
   const [query, setQuery] = useState<string>('')
+  const [view, setView] = useState<string>('list')
 
   async function search(q: string) {
     setQuery(q)
@@ -59,16 +61,23 @@ export default function Home() {
         {results && results.length != 0 &&
           <div>
             <Box className="rounded-xl">
-              <Flex >
+              <Flex>
                 <Box bg={colorMode === 'light' ? 'gray.200' : 'gray.700' } flex="1" className="p-4 rounded-l-xl">{results.length} results</Box>
-                <Box bg={colorMode === 'light' ? 'gray.200' : 'gray.700' } className="border p-4 rounded-r-xl">
-                  <Text>Order by:</Text>
-                  <Select>
-                    <option>Default</option>
-                    <option>Title (A&raquo;Z)</option>
-                    <option>Year</option>
-                    <option>Type</option>
-                  </Select>
+                <Box bg={colorMode === 'light' ? 'gray.200' : 'gray.700' } className="p-4">
+                  <HStack>
+                    <Select icon={<BiSortAlt2/>}>
+                      <option>Default</option>
+                      <option>Title (A&raquo;Z)</option>
+                      <option>Year</option>
+                      <option>Type</option>
+                    </Select>
+                  </HStack>
+                </Box>
+                <Box  bg={colorMode === 'light' ? 'gray.200' : 'gray.700' } className="p-4 rounded-r-xl">
+                  <ButtonGroup isAttached variant="outline">
+                    <IconButton isActive={view == 'list'} onClick={() => setView('list')} aria-label='List view' icon={<HiViewList/>} />
+                    <IconButton isActive={view == 'grid'} onClick={() => setView('grid')} aria-label='Grid View' icon={<HiViewGrid/>} />
+                  </ButtonGroup>
                 </Box>
               </Flex>
             </Box>
