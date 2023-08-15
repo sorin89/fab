@@ -20,13 +20,19 @@ export async function GET(request: NextRequest) {
           imdbID: result.imdbID,
           title: result.Title,
           year: result.Year,
-          poster: {
-            create: 
-              { url: result.Poster }
-          }
+
         }
-        const createdMovie = await prisma.movies.create({ data })
-        
+        if(result.Poster == 'N/A') {
+          await prisma.movies.create({ data })
+        } else {
+          await prisma.movies.create({ data: {
+            ...data, 
+            poster: {
+              create: 
+                { url: result.Poster }
+              }
+          }})
+        }
       }
     }
     addMovie(r)
