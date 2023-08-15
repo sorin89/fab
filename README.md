@@ -1,5 +1,6 @@
 This is a test app for Fabric.
-You can run it locally using the steps below or preview it on [Tidybase.com](https://www.tidybase.com).
+Preview it here: [Tidybase.com](https://www.tidybase.com)
+You can run it locally using the steps below:
 
 ## Install dependencies
 `npm install`
