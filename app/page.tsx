@@ -21,6 +21,7 @@ export default function Home() {
   const [query, setQuery] = useState<string>('')
   const [view, setView] = useState<string>('list')
   const [loading, setLoading] = useState<boolean>(false)
+  const { colorMode, toggleColorMode } = useColorMode()
 
   async function search(q: string) {
     setLoading(true)
@@ -35,7 +36,10 @@ export default function Home() {
     if(value == '') setResults([])
     setQuery(value)
   }
-  const { colorMode, toggleColorMode } = useColorMode()
+
+  function sort(v: string) {
+    setResults(results.sort((a:any,b:any) => a-b))
+  }
 
   return (
     <main className="max-w-5xl py-10 mx-4 lg:mx-auto">
@@ -44,10 +48,9 @@ export default function Home() {
         <IconButton aria-label="Color mode" onClick={toggleColorMode} className="text-3xl rounded-full" icon={colorMode === 'light' ? <BiSun/> : <BiMoon/> } />
       </HStack>
       <div className="flex flex-wrap items-center">
-        <Text className="mr-2">Examples: </Text>
-        <Button size="sm" className="rounded-xl border mx-1 my-1" onClick={() => search('Matrix')}>Matrix</Button>
-        <Button size="sm" className="rounded-xl border mx-1 my-1" onClick={() => search('Matrix Reloaded')}>Matrix Reloaded</Button>
-        <Button size="sm" className="rounded-xl border mx-1 my-1" onClick={() => search('Matrix Revolutions')}>Matrix Revolutions</Button>
+        <Button size="sm" className="rounded-xl border mr-2 my-1" onClick={() => search('Matrix')}>Matrix</Button>
+        <Button size="sm" className="rounded-xl border mr-2 my-1" onClick={() => search('Matrix Reloaded')}>Matrix Reloaded</Button>
+        <Button size="sm" className="rounded-xl border mr-2 my-1" onClick={() => search('Matrix Revolutions')}>Matrix Revolutions</Button>
       </div>
       <Input 
         placeholder="🔍 search"
@@ -67,8 +70,8 @@ export default function Home() {
               <div>
                 <Box className="rounded-xl" bg={colorMode === 'light' ? 'gray.50' : 'gray.700' }>
                   <Flex>
-                    <Box flex="1" className="flex p-4 items-center">{results.length} results</Box>
-                    <Box className="p-4">
+                    <Box flex="1" className="flex p-2 sm:p-4 items-center text-sm">{results.length} results</Box>
+                    <Box className="p-2 sm:p-4">
                       <HStack>
                         <Select icon={<BiSortAlt2/>}>
                           <option>Default</option>
@@ -79,7 +82,7 @@ export default function Home() {
                         </Select>
                       </HStack>
                     </Box>
-                    <Box className="p-4 rounded-r-xl">
+                    <Box className="p-2 sm:p-4 rounded-r-xl">
                       <ButtonGroup isAttached variant="outline">
                         <IconButton isActive={view == 'list'} onClick={() => setView('list')} aria-label='List view' icon={<HiViewList/>} />
                         <IconButton isActive={view == 'grid'} onClick={() => setView('grid')} aria-label='Grid View' icon={<HiViewGrid/>} />
@@ -89,19 +92,22 @@ export default function Home() {
                 </Box>
                 <div className={`${view == 'grid' && 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'}`}>
                 {results.map((r, index) => (
-                    <div key={index} className={`my-2 flex ${view == 'grid' && 'flex-col'} items-center p-2 rounded-md cursor-pointer ${colorMode === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-700' }`}>
+                    <div key={index} className={`my-2 flex space-x-2 ${view == 'grid' && 'flex-col'} items-center p-2 rounded-xl cursor-pointer ${colorMode === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-700' }`}>
                       <img 
                         src={`${r.Poster != 'N/A' ? r.Poster : 'poster.png'}`} 
-                        className={`${view == 'grid' ? 'w-full' : 'w-10'} rounded-lg mx-2 border border-gray-400`} 
+                        className={`${view == 'grid' ? 'w-full mb-2' : 'w-10'} rounded-lg border border-gray-400`} 
                         alt={`Poster for ${r.Title}`} 
                       />
-                      <div className={`flex-grow font-semibold ${view == 'grid' && 'text-center'}`}>{r.Title}</div>
-                      <div className="flex items-center px-5"><PiClockDuotone className="mr-1" /> {r.Year}</div>
-                      <a href={`https://www.imdb.com/title/${r.imdbID}/`} target="_blank">
-                        <div className="flex items-center px-5 ">
-                          <FaImdb className="mr-1" /> {r.imdbID}
-                        </div>
-                      </a>
+                      <div className={`flex-grow ${view == 'list' && 'flex flex-col sm:flex-row space-x-4 sm:space-x-10'}`}>
+
+                        <div className={`flex-grow font-semibold w-full sm:px-0 ${view == 'grid' ? '' : 'mx-5'}`}>{r.Title}</div>
+                        <div className={`flex items-center text-center`}><PiClockDuotone className="mr-1" /> {r.Year}</div>
+                        <a href={`https://www.imdb.com/title/${r.imdbID}/`} target="_blank">
+                          <div className="flex items-center text-center font-mono">
+                            <FaImdb className="mr-1" /> {r.imdbID}
+                          </div>
+                        </a>
+                      </div>
                     </div>
                 ))}
                 </div>
