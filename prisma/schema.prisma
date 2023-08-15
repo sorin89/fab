@@ -11,7 +11,16 @@ datasource db {
 }
 
 model Movies {
-  id      Int     @id @default(autoincrement())
-  imdbID  String  @unique
-  title   String
+  id        Int     @id @default(autoincrement())
+  imdbID    String  @unique
+  title     String
+  year     Int
+  poster    Posters @relation(fields: [postersId], references: [id])
+  postersId Int
+}
+
+model Posters {
+  id     Int      @id @default(autoincrement())
+  url    String
+  Movies Movies[]
 }

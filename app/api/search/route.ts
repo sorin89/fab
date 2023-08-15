@@ -20,6 +20,7 @@ export async function GET(request: NextRequest) {
           data: {
             imdbID: result.imdbID,
             title: result.Title,
+            year: result.Year,
           },
         })
       }
