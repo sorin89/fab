@@ -18,7 +18,6 @@ interface Movie {
 
 export default function Home() {
   const [results, setResults] = useState<Movie[]>([])
-  const [defaultSort, setDefaultSort] = useState<Movie[]>([])
   const [query, setQuery] = useState<string>('')
   const [view, setView] = useState<string>('list')
   const [loading, setLoading] = useState<boolean>(false)
@@ -30,7 +29,6 @@ export default function Home() {
     const response = await fetch(`/api/search?q=${q}`);
     const results = await response.json();
     setResults(results)
-    setDefaultSort(results)
     setLoading(false)
   }
 
@@ -41,10 +39,8 @@ export default function Home() {
 
   function sort(e:any) {
     const value = e.target.value
-    console.log(value)
     if(value === "Default") {
-      console.log(defaultSort)
-      setResults([...defaultSort]) 
+      search(query)
     } else {
       let sortedResults = results.sort((a:any, b:any) => a[value].localeCompare(b[value]))
       setResults([...sortedResults])
@@ -73,7 +69,7 @@ export default function Home() {
       />
       <div>
         {loading ?
-          <CgSpinner className="animate-spin text-4xl"/>
+          <CgSpinner className="animate-spin text-4xl my-6 mx-auto"/>
         :
           <>
             {results && results.length != 0 &&
