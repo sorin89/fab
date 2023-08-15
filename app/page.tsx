@@ -81,7 +81,7 @@ export default function Home() {
                     <Box flex="1" className="flex p-2 sm:p-4 items-center text-sm">{results.length} results</Box>
                     <Box className="p-2 sm:p-4">
                       <HStack>
-                        <Select icon={<BiSortAlt2/>} onChange={sort} className="border cursor-pointer border-gray-500">
+                        <Select icon={<BiSortAlt2/>} onChange={sort} className={`border cursor-pointer  ${colorMode === 'light' ? 'border-gray-200' : 'border-gray-500'}`}>
                           <option>Default</option>
                           <option>Title</option>
                           <option>Year</option>
@@ -98,7 +98,7 @@ export default function Home() {
                 </Box>
                 <div className={`${view == 'grid' && 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'}`}>
                 {results.map((r, index) => (
-                    <div key={index} className={`my-2 flex space-x-2 ${view == 'grid' && 'flex-col'} items-center p-2 rounded-xl cursor-pointer ${colorMode === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-700' }`}>
+                    <div key={index} className={`my-2 flex space-x-2 ${view == 'grid' && 'flex-col'} items-center p-2 rounded-xl cursor-default ${colorMode === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-700' }`}>
                       <img 
                         src={`${r.Poster != 'N/A' ? r.Poster : 'poster.png'}`} 
                         className={`${view == 'grid' ? 'w-full mb-2' : 'w-10'} rounded-lg border border-gray-400`} 
