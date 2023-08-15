@@ -18,6 +18,7 @@ interface Movie {
 
 export default function Home() {
   const [results, setResults] = useState<Movie[]>([])
+  const [defaultSort, setDefaultSort] = useState<Movie[]>([])
   const [query, setQuery] = useState<string>('')
   const [view, setView] = useState<string>('list')
   const [loading, setLoading] = useState<boolean>(false)
@@ -29,6 +30,7 @@ export default function Home() {
     const response = await fetch(`/api/search?q=${q}`);
     const results = await response.json();
     setResults(results)
+    setDefaultSort(results)
     setLoading(false)
   }
 
@@ -37,8 +39,16 @@ export default function Home() {
     setQuery(value)
   }
 
-  function sort(v: string) {
-    setResults(results.sort((a:any,b:any) => a-b))
+  function sort(e:any) {
+    const value = e.target.value
+    console.log(value)
+    if(value === "Default") {
+      console.log(defaultSort)
+      setResults([...defaultSort]) 
+    } else {
+      let sortedResults = results.sort((a:any, b:any) => a[value].localeCompare(b[value]))
+      setResults([...sortedResults])
+    }
   }
 
   return (
@@ -59,7 +69,7 @@ export default function Home() {
         value={query} 
         onChange={(e) => setSearch(e.target.value)} 
         onKeyUp={e=> e.key === "Enter" && search(query)} 
-        className="my-10"
+        className="mt-10 rounded-none"
       />
       <div>
         {loading ?
@@ -68,17 +78,15 @@ export default function Home() {
           <>
             {results && results.length != 0 &&
               <div>
-                <Box className="rounded-xl" bg={colorMode === 'light' ? 'gray.50' : 'gray.700' }>
+                <Box className="rounded-b-xl" bg={colorMode === 'light' ? 'gray.50' : 'gray.700' }>
                   <Flex>
                     <Box flex="1" className="flex p-2 sm:p-4 items-center text-sm">{results.length} results</Box>
                     <Box className="p-2 sm:p-4">
                       <HStack>
-                        <Select icon={<BiSortAlt2/>}>
+                        <Select icon={<BiSortAlt2/>} onChange={sort}>
                           <option>Default</option>
-                          <option>Title (A&raquo;Z)</option>
-                          <option>Title (Z&raquo;A)</option>
+                          <option>Title</option>
                           <option>Year</option>
-                          <option>Type</option>
                         </Select>
                       </HStack>
                     </Box>
