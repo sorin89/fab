@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 import { useState } from "react"
 import { FaImdb } from "react-icons/fa";
@@ -61,11 +62,12 @@ export default function Home() {
       <Input 
         placeholder="🔍 search"
         type="search"
+        variant="filled"
         size="md"
         value={query} 
         onChange={(e) => setSearch(e.target.value)} 
         onKeyUp={e=> e.key === "Enter" && search(query)} 
-        className="mt-10 rounded-none"
+        className="mt-10"
       />
       <div>
         {loading ?
@@ -74,12 +76,12 @@ export default function Home() {
           <>
             {results && results.length != 0 &&
               <div>
-                <Box className="rounded-b-xl" bg={colorMode === 'light' ? 'gray.50' : 'gray.700' }>
+                <Box className="rounded mt-1" bg={colorMode === 'light' ? 'gray.50' : 'gray.700' }>
                   <Flex>
                     <Box flex="1" className="flex p-2 sm:p-4 items-center text-sm">{results.length} results</Box>
                     <Box className="p-2 sm:p-4">
                       <HStack>
-                        <Select icon={<BiSortAlt2/>} onChange={sort}>
+                        <Select icon={<BiSortAlt2/>} onChange={sort} className="border cursor-pointer border-gray-500">
                           <option>Default</option>
                           <option>Title</option>
                           <option>Year</option>
