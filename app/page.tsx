@@ -11,7 +11,7 @@ import Image from 'next/image'
 
 interface Movie {
   Title: string;
-  Year: string;
+  Year: number;
   imdbID: string;
   Type: string;
   Poster: string;
