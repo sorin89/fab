@@ -16,13 +16,17 @@ export async function GET(request: NextRequest) {
         },
       })
       if(!movie) {
-        await prisma.movies.create({
-          data: {
-            imdbID: result.imdbID,
-            title: result.Title,
-            year: result.Year,
-          },
-        })
+        const data = {
+          imdbID: result.imdbID,
+          title: result.Title,
+          year: result.Year,
+          poster: {
+            create: 
+              { url: result.Poster }
+          }
+        }
+        const createdMovie = await prisma.movies.create({ data })
+        
       }
     }
     addMovie(r)

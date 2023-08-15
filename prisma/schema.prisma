@@ -14,13 +14,14 @@ model Movies {
   id        Int     @id @default(autoincrement())
   imdbID    String  @unique
   title     String
-  year     Int
-  poster    Posters @relation(fields: [postersId], references: [id])
-  postersId Int
+  year      String
+  poster    Posters?
 }
 
 model Posters {
   id     Int      @id @default(autoincrement())
   url    String
-  Movies Movies[]
+  movie  Movies  @relation(fields: [movieId], references: [id])
+  movieId Int @unique
+  
 }
