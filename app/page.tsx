@@ -1,12 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 import { useState } from "react"
-import { BiSun, BiMoon, BiSortAlt2 } from "react-icons/bi";
+import { BiSun, BiMoon } from "react-icons/bi";
 import { CgSpinner } from "react-icons/cg";
-import { HiViewList, HiViewGrid } from "react-icons/hi";
-import { Button, IconButton, ButtonGroup, Input, Stack, Text, useColorMode, HStack, Box, Flex, Select } from '@chakra-ui/react'
-import { Result } from "../components"
-import Image from 'next/image'
+import { Button, IconButton, Input, Text, useColorMode, HStack } from '@chakra-ui/react'
+import { Result, Options } from "../components"
 
 interface Movie {
   Title: string;
@@ -75,30 +73,18 @@ export default function Home() {
           <>
             {results && results.length != 0 &&
               <div>
-                <Box className="rounded mt-1" bg={colorMode === 'light' ? 'gray.50' : 'gray.700' }>
-                  <Flex>
-                    <Box flex="1" className="flex p-2 sm:p-4 items-center text-sm">{results.length} results</Box>
-                    <Box className="p-2 sm:p-4">
-                      <HStack>
-                        <Select icon={<BiSortAlt2/>} onChange={sort} className={`border cursor-pointer  ${colorMode === 'light' ? 'border-gray-200' : 'border-gray-500'}`}>
-                          <option>Default</option>
-                          <option>Title</option>
-                          <option>Year</option>
-                        </Select>
-                      </HStack>
-                    </Box>
-                    <Box className="p-2 sm:p-4 rounded-r-xl">
-                      <ButtonGroup isAttached variant="outline">
-                        <IconButton isActive={view == 'list'} onClick={() => setView('list')} aria-label='List view' icon={<HiViewList/>} />
-                        <IconButton isActive={view == 'grid'} onClick={() => setView('grid')} aria-label='Grid View' icon={<HiViewGrid/>} />
-                      </ButtonGroup>
-                    </Box>
-                  </Flex>
-                </Box>
+                <Options 
+                  results={results}
+                  onClickGrid={() => setView('grid')} 
+                  onClickList={() => setView('list')} 
+                  onChange={sort}
+                  view={view}
+                  colorMode={colorMode}
+                />
                 <div className={`${view == 'grid' && 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'}`}>
-                {results.map((r, index) => (
-                  <Result r={r} key={index} view={view} colorMode={colorMode} />
-                ))}
+                  {results.map((r, index) => (
+                    <Result r={r} key={index} view={view} colorMode={colorMode} />
+                  ))}
                 </div>
               </div>
             }
